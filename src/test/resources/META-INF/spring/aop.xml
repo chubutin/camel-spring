@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- Enable AspectJ style of Spring AOP -->
+	<aop:aspectj-autoproxy />
+
+	<!-- Configure Employee Bean and initialize it -->
+	<bean name="employee" class="ar.com.colo.spring.model.Employee">
+		<property name="name" value="Dummy Name"></property>
+	</bean>
+
+	<!-- Configure EmployeeService bean -->
+	<bean name="employeeService" class="ar.com.colo.spring.service.EmployeeService">
+		<property name="employee" ref="employee"/>
+	</bean>
+
+	<!-- Configure Aspect Beans, without this Aspects advices wont execute -->
+	<bean name="employeeAspect" class="ar.com.colo.spring.aspect.EmployeeAspect" />
+	<bean name="employeeAspectPointcut" class="ar.com.colo.spring.aspect.EmployeeAspectPointcut" />
+	<bean name="employeeAspectJoinPoint" class="ar.com.colo.spring.aspect.EmployeeAspectJoinPoint" />
+	<bean name="employeeAfterAspect" class="ar.com.colo.spring.aspect.EmployeeAfterAspect" />
+	<bean name="employeeAroundAspect" class="ar.com.colo.spring.aspect.EmployeeAroundAspect" />
+	<bean name="employeeAnnotationAspect" class="ar.com.colo.spring.aspect.EmployeeAnnotationAspect" />
+
+</beans>

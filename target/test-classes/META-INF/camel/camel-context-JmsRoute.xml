@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configures the Camel Context -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<camel:camelContext xmlns="http://camel.apache.org/schema/spring"
+		id="camel-spring">
+
+		<camel:propertyPlaceholder id="properties"
+			location="application.properties" />
+		
+		<camel:route>
+			<camel:from uri="vm:foo" />
+			<camel:transform>
+				<camel:simple>Heartbeat ${date:now:yyyy-MM-dd HH:mm:ss}</camel:simple>
+			</camel:transform>
+			<camel:to uri="activemq:queue:in" />
+		</camel:route>
+
+		<camel:route>
+			<camel:from uri="activemq:queue:in" />
+			<camel:log message="Route message from in queue to out queue with data ${body}" />
+			<camel:to uri="activemq:queue:out" />
+		</camel:route>
+		
+		<camel:route>
+			<camel:from uri="activemq:queue:out" />
+			<camel:log message="Print the message from out to console"/>
+			<camel:log message="MENSAJE : ${body}" />
+			<camel:to uri="mock:mockEndpoint" />
+		</camel:route>
+
+
+
+	</camel:camelContext>
+
+	<bean id="jmsRouteBuilder" class="ar.com.colo.camel.route.JmsRoute"/>
+
+
+
+</beans>
